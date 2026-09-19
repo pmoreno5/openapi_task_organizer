@@ -1,40 +1,40 @@
-# API REST para gestionar tareas
+# Identificar las decisiones necesarias para la especificación OpenAPI
 
 ## Objetivos
 
-### Requisitos funcionales
+### Decisiones acordadas
 
-- Modelo de datos de una tarea con los campos:
-  - `id`
-  - `title`
-  - `description`
-  - `completed`
-- Operaciones de la API:
-  - Consultar todas las tareas.
-  - Consultar una tarea por su ID.
-  - Crear una tarea.
-  - Modificar una tarea.
-  - Eliminar una tarea.
-
-### Requisitos técnicos
-
-- Definir una especificación OpenAPI para la API en `openapi.yaml`.
-- La API es de tipo REST.
+- Versión de OpenAPI: `3.1.0`.
+- Tipos y formatos de los campos de `Task`:
+  - `id`: integer.
+  - `title`: string.
+  - `description`: string.
+  - `completed`: boolean.
+- Campos obligatorios: `id`, `title` y `completed`. `description` es el único opcional.
+- Path del recurso: `/tasks` (inglés).
+- Método de modificación: `PATCH` (modificación parcial).
+- Códigos de estado por operación:
+  - `GET /tasks` → `200`.
+  - `GET /tasks/{id}` → `200`, `404`.
+  - `POST /tasks` → `201`, `422`.
+  - `PATCH /tasks/{id}` → `200`, `400`, `404`.
+  - `DELETE /tasks/{id}` → `204`, `404`.
+  - `400`: cuerpo de la petición malformado.
+  - `422`: errores de validación de campos.
+  - `404`: recurso no encontrado.
+- Formato de las respuestas de error: objeto JSON con un mensaje en inglés que ayude al cliente, p. ej. `{"error": "Task not found"}`.
 
 ### Criterios de aceptación
 
-- Se han extraído los requisitos de la descripción informal de `spec.txt`.
-- Las ambigüedades quedan recogidas para su resolución en la fase de decisiones.
+- Cada decisión queda registrada de forma explícita.
+- Las decisiones son coherentes con la descripción informal de `spec.txt`.
 
 ## Notas
 
-- Ambigüedades detectadas pendientes de resolución:
-  - Tipos de datos de cada campo (`id`: integer vs UUID/string; `title` y `description`: string; `completed`: boolean).
-  - Sintaxis del path del recurso: `/tasks` (inglés) vs `/tareas`.
-  - Modificación: `PUT` (sustitución total) vs `PATCH` (parcial).
-  - Campos obligatorios (¿`title` siempre requerido? ¿`description` opcional?).
+- Fuente de referencia: descripción informal de `spec.txt`.
+- Las decisiones acordadas servirán de base para construir `openapi.yaml` (issue #3).
+- Ambigüedades de `spec.txt` que quedan fuera del alcance de esta issue:
   - Valores por defecto (¿`completed=false`? ¿`id` autogenerado por el servidor?).
-  - Códigos de estado y formato de errores (400, 404, 201, 204, etc.).
   - Paginación, filtrado y ordenación no especificados.
 
 ## Histórico
