@@ -1,0 +1,20 @@
+Queremos desarrollar una API REST para gestionar tareas.
+
+Una tarea tiene:
+
+- `id`
+- `title`
+- `description`
+- `completed`
+
+La API debe permitir:
+
+- consultar todas las tareas
+- consultar una tarea por su ID
+- crear una tarea
+- modificar una tarea
+- eliminar una tarea
+
+Define una especificación OpenAPI para esta API.
+
+
