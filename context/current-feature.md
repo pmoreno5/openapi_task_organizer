@@ -1,45 +1,22 @@
-# Construir `openapi.yaml`
+# Revisar y validar la especificación generada
 
 ## Objetivos
 
 ### Requisitos
 
-- Crear el fichero `openapi.yaml` completando el esqueleto actual (actualmente vacío).
-- Definir el modelo `Task` y los esquemas de error.
-- Definir los cinco endpoints: listar, obtener por ID, crear, modificar y eliminar.
-
-### Decisiones a aplicar (fase de identificación)
-
-- Versión de OpenAPI: `3.1.0`.
-- Path del recurso: `/tasks` (inglés).
-- Tipos y formatos de los campos de `Task`:
-  - `id`: integer.
-  - `title`: string.
-  - `description`: string.
-  - `completed`: boolean.
-- Campos obligatorios de `Task`: `id`, `title` y `completed`. `description` es el único opcional.
-- Método de modificación: `PATCH` (modificación parcial).
-- Códigos de estado por operación:
-  - `GET /tasks` → `200`.
-  - `GET /tasks/{id}` → `200`, `404`.
-  - `POST /tasks` → `201`, `422`.
-  - `PATCH /tasks/{id}` → `200`, `400`, `404`.
-  - `DELETE /tasks/{id}` → `204`, `404`.
-  - Significado de los códigos de error: `400` cuerpo de la petición malformado; `422` errores de validación de campos; `404` recurso no encontrado.
-- Formato de las respuestas de error: objeto JSON con un mensaje en inglés que ayude al cliente, p. ej. `{"error": "Task not found"}`.
+- Validar `openapi.yaml` con una herramienta de validación OpenAPI disponible en el entorno (p. ej. un linter CLI como `redocly` o `spectral`, o un validador equivalente).
+- Revisar la salida de la validación e identificar posibles problemas.
+- Comprobar que la especificación cubre todo lo descrito en `spec.txt`.
 
 ### Criterios de aceptación
 
-- `openapi.yaml` es una especificación OpenAPI válida.
-- Cubre todas las operaciones y campos descritos en `spec.txt`.
-- Respeta las decisiones registradas en la fase de identificación.
+- La especificación pasa la validación sin errores bloqueantes, o bien los errores quedan identificados y recogidos para su corrección.
+- La especificación es coherente con la descripción informal de `spec.txt`.
 
 ## Notas
 
-- Fuente de referencia: descripción informal de `spec.txt` y decisiones acordadas en la fase de identificación (issue #2).
-- Fuera del alcance de esta feature:
-  - Valores por defecto (¿`completed=false`? ¿`id` autogenerado por el servidor?).
-  - Paginación, filtrado y ordenación.
-- La validez del fichero generado se verificará en la revisión (issue #4).
+- Fuente de referencia: issue #4.
+- La especificación a revisar (`openapi.yaml`) se construyó en la fase de construcción de la feature (issue #3).
+- Los posibles problemas encontrados, cuando no sean bloqueantes, deben quedar identificados y recogidos para su corrección posterior.
 
 ## Histórico
