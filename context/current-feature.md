@@ -1,40 +1,45 @@
-# API REST para gestionar tareas
+# Construir `openapi.yaml`
 
 ## Objetivos
 
-### Requisitos funcionales
+### Requisitos
 
-- Modelo de datos de una tarea con los campos:
-  - `id`
-  - `title`
-  - `description`
-  - `completed`
-- Operaciones de la API:
-  - Consultar todas las tareas.
-  - Consultar una tarea por su ID.
-  - Crear una tarea.
-  - Modificar una tarea.
-  - Eliminar una tarea.
+- Crear el fichero `openapi.yaml` completando el esqueleto actual (actualmente vacío).
+- Definir el modelo `Task` y los esquemas de error.
+- Definir los cinco endpoints: listar, obtener por ID, crear, modificar y eliminar.
 
-### Requisitos técnicos
+### Decisiones a aplicar (fase de identificación)
 
-- Definir una especificación OpenAPI para la API en `openapi.yaml`.
-- La API es de tipo REST.
+- Versión de OpenAPI: `3.1.0`.
+- Path del recurso: `/tasks` (inglés).
+- Tipos y formatos de los campos de `Task`:
+  - `id`: integer.
+  - `title`: string.
+  - `description`: string.
+  - `completed`: boolean.
+- Campos obligatorios de `Task`: `id`, `title` y `completed`. `description` es el único opcional.
+- Método de modificación: `PATCH` (modificación parcial).
+- Códigos de estado por operación:
+  - `GET /tasks` → `200`.
+  - `GET /tasks/{id}` → `200`, `404`.
+  - `POST /tasks` → `201`, `422`.
+  - `PATCH /tasks/{id}` → `200`, `400`, `404`.
+  - `DELETE /tasks/{id}` → `204`, `404`.
+  - Significado de los códigos de error: `400` cuerpo de la petición malformado; `422` errores de validación de campos; `404` recurso no encontrado.
+- Formato de las respuestas de error: objeto JSON con un mensaje en inglés que ayude al cliente, p. ej. `{"error": "Task not found"}`.
 
 ### Criterios de aceptación
 
-- Se han extraído los requisitos de la descripción informal de `spec.txt`.
-- Las ambigüedades quedan recogidas para su resolución en la fase de decisiones.
+- `openapi.yaml` es una especificación OpenAPI válida.
+- Cubre todas las operaciones y campos descritos en `spec.txt`.
+- Respeta las decisiones registradas en la fase de identificación.
 
 ## Notas
 
-- Ambigüedades detectadas pendientes de resolución:
-  - Tipos de datos de cada campo (`id`: integer vs UUID/string; `title` y `description`: string; `completed`: boolean).
-  - Sintaxis del path del recurso: `/tasks` (inglés) vs `/tareas`.
-  - Modificación: `PUT` (sustitución total) vs `PATCH` (parcial).
-  - Campos obligatorios (¿`title` siempre requerido? ¿`description` opcional?).
+- Fuente de referencia: descripción informal de `spec.txt` y decisiones acordadas en la fase de identificación (issue #2).
+- Fuera del alcance de esta feature:
   - Valores por defecto (¿`completed=false`? ¿`id` autogenerado por el servidor?).
-  - Códigos de estado y formato de errores (400, 404, 201, 204, etc.).
-  - Paginación, filtrado y ordenación no especificados.
+  - Paginación, filtrado y ordenación.
+- La validez del fichero generado se verificará en la revisión (issue #4).
 
 ## Histórico
