@@ -10,8 +10,7 @@ info:
     url: https://creativecommons.org/publicdomain/zero/1.0/
 servers:
   - url: http://localhost
-security:
-  - {}
+security: []
 paths:
   /tasks:
     get:
@@ -85,6 +84,8 @@ paths:
                 $ref: '#/components/schemas/Task'
         '400':
           $ref: '#/components/responses/MalformedBody'
+        '422':
+          $ref: '#/components/responses/ValidationError'
         '404':
           $ref: '#/components/responses/NotFound'
     delete:
@@ -114,6 +115,7 @@ components:
         id:
           type: integer
           description: The unique identifier of the task
+          readOnly: true
         title:
           type: string
           description: The title of the task
@@ -145,9 +147,10 @@ components:
         completed:
           type: boolean
           description: Whether the task is completed
+          default: false
       required:
         - title
-        - completed
+      additionalProperties: false
       example:
         title: Write the OpenAPI specification
         description: Create a valid openapi.yaml for the tasks API
@@ -165,6 +168,7 @@ components:
         completed:
           type: boolean
           description: Whether the task is completed
+      additionalProperties: false
       example:
         completed: true
     Error:
